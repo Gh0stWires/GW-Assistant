@@ -5,3 +5,4 @@ https://aiyprojects.withgoogle.com/voice/
 
 The scripts in the `checkpoints` directory verify the Raspberry Pi's setup.
 They can be run from the desktop shortcuts or from the terminal.
+# GW-Assistant
