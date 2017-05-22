@@ -17,6 +17,10 @@
 import datetime
 import logging
 import subprocess
+import webbrowser
+import os
+import requests
+import shlex
 
 import actionbase
 
@@ -198,12 +202,57 @@ class RepeatAfterMe(object):
 # Makers! Implement your own actions here.
 # =========================================
 
+class MasterTerminal(object):
+
+    def __init__(self, say):
+        self.say = say
+
+
+    def run(self, voice_command):
+        self.say("Yes mister stark")
+        os.system("DISPLAY=:0 lxterminal")
+
+class MasterIDLE(object):
+
+    def __init__(self, say):
+        self.say = say
+
+
+    def run(self, voice_command):
+        self.say("Yes mister stark")
+        os.system("idle3")
+
+class OpenTVNetflix(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.23 AAAAAgAAABoAAAB8Aw=='))
+
+##        xml = """<?xml version="1.0"?>
+##<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+##  <s:Body>
+##    <u:X_SendIRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1">
+##      <IRCCCode>AAAAAQAAAAEAAAATAw==</IRCCCode>
+##    </u:X_SendIRCC>
+##  </s:Body>
+##  <s:Header/>
+##      <s:BODY><u:X-Auth-PSK>0000</u:X-Auth-PSK></s:Body>
+##</s:Envelope>"""
+##        xml2 = """<?xml version=\"1.0\"?><s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><s:Body><u:X_SendIRCC xmlns:u=\"urn:schemas-sony-com:service:IRCC:1\"><IRCCCode>AAAAAQAAAAEAAAATAw==</IRCCCode></u:X_SendIRCC></s:Body></s:Envelope>"""
+##
+##        headers = {'Content-Type': 'text/xml'}
+##        requests.post('http://192.168.0.23/sony/IRCC', data=xml, headers=headers)
+
 
 def make_actor(say):
     """Create an actor to carry out the user's commands."""
 
     actor = actionbase.Actor()
 
+    
     actor.add_keyword(
         _('ip address'), SpeakShellCommandOutput(
             say, "ip -4 route get 1 | head -1 | cut -d' ' -f8",
@@ -212,6 +261,10 @@ def make_actor(say):
     actor.add_keyword(_('volume up'), VolumeControl(say, 10))
     actor.add_keyword(_('volume down'), VolumeControl(say, -10))
     actor.add_keyword(_('max volume'), VolumeControl(say, 100))
+    actor.add_keyword(_('boobs'), ThisIsWrong(say, True, "o, yes"))
+    actor.add_keyword(_('GW open a new terminal'), MasterTerminal(say))
+    actor.add_keyword(_('GW open the python editor'), MasterIDLE(say))
+    actor.add_keyword(_('GW open netflix'), OpenTVNetflix(say))
 
     actor.add_keyword(_('repeat after me'),
                       RepeatAfterMe(say, _('repeat after me')))

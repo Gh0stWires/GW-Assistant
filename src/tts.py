@@ -20,6 +20,7 @@ import os
 import subprocess
 import tempfile
 import wave
+#import pyttsx
 
 import numpy as np
 from scipy import signal
@@ -28,6 +29,7 @@ import i18n
 
 # Path to a tmpfs directory to avoid SD card wear
 TMP_DIR = '/run/user/%d' % os.getuid()
+#engine = pyttsx.init()
 
 # Expected sample rate from the TTS tool
 SAMPLE_RATE = 16000
@@ -67,8 +69,12 @@ def create_say(player):
     lang = i18n.get_language_code()
     return functools.partial(say, player, eq_filter=create_eq_filter(), lang=lang)
 
-
 def say(player, words, eq_filter=None, lang='en-US'):
+    
+    #engine.say(words)
+    subprocess.call(['flite', '-voice', 'rms', '-t',words])
+
+def sayold(player, words, eq_filter=None, lang='en-US'):
     """Say the given words with TTS."""
 
     try:
