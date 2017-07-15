@@ -30,6 +30,8 @@ import action
 import i18n
 import speech
 import tts
+import tj
+import asyncore
 
 # =============================================================================
 #
@@ -133,6 +135,8 @@ def main():
                         'Cloud Speech API')
 
     args = parser.parse_args()
+
+    
 
     create_pid_file(args.pid_file)
     i18n.set_language_code(args.language, gettext_install=True)
