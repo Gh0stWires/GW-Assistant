@@ -17,6 +17,12 @@
 import datetime
 import logging
 import subprocess
+import webbrowser
+import os
+import requests
+import shlex
+#from simpletcp.tcpserver import TCPServer
+#from xbmcjson import XBMC, PLAYER_VIDEO
 
 import actionbase
 
@@ -58,6 +64,8 @@ import actionbase
 #   - self.words are the words to use as the response.
 # run is called when the voice command is used. It gets the user's exact voice
 # command as a parameter.
+
+#xbmc = XBMC("http://192.168.0.34:8080/jsonrpc", "osmc", "osmc")
 
 class SpeakAction(object):
 
@@ -198,20 +206,236 @@ class RepeatAfterMe(object):
 # Makers! Implement your own actions here.
 # =========================================
 
+class MasterTerminal(object):
+
+    def __init__(self, say):
+        self.say = say
+
+
+    def run(self, voice_command):
+        self.say("Yes mister stark")
+        subprocess.call(["DISPLAY=:0 lxterminal"],shell=True)
+
+class MasterIDLE(object):
+
+    def __init__(self, say):
+        self.say = say
+
+
+    def run(self, voice_command):
+        self.say("Yes mister stark")
+        os.system("idle3")
+
+class OpenTVNetflix(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.21 AAAAAgAAABoAAAB8Aw=='))
+
+
+class TVVolumeUp(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        for _ in range(5):
+            subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.12 AAAAAQAAAAEAAAASAw=='))
+
+class TVVolumeDown(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        for _ in range(5):
+            subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.12 AAAAAQAAAAEAAAATAw=='))
+
+class TVPowerOff(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.21 AAAAAQAAAAEAAAAvAw=='))
+
+
+class TVPowerOn(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.21 AAAAAQAAAAEAAAAuAw=='))
+
+        
+class TVHdmiTwo(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.12 AAAAAgAAABoAAABbAw=='))
+
+
+class TVHdmiThree(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.12 AAAAAgAAABoAAABcAw=='))
+
+
+class TVExit(object):
+
+    def __init__(self, say):
+        self.say = say
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.12 AAAAAQAAAAEAAABgAw=='))
+
+
+##class KodiPlay(object):
+##
+##    def __init__(self, say):
+##        self.say = say
+##        self.xbmc = xbmc
+##
+##    def run(self, voice_command):
+##        self.say("With Pleasure")
+##        self.xbmc.Player.PlayPause([PLAYER_VIDEO])
+
+
+class Spotify(object):
+
+    def __init__(self, say):
+        self.say = say
+        
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(['DISPLAY=:0 /usr/bin/chromium-browser --profile-directory=Default --app-id=ddaicbffbbkapedbibibcajpdbendghk'], shell=True)
+
+
+class PsOn(object):
+
+    def __init__(self, say):
+        self.say = say
+        
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(['sudo ps4-waker [option]'], shell=True)
+
+class PsOff(object):
+
+    def __init__(self, say):
+        self.say = say
+        
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(['sudo ps4-waker [option] standby'], shell=True)
+
+
+class PsWolf(object):
+
+    def __init__(self, say):
+        self.say = say
+        
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(['sudo ps4-waker [option] start CUSA00314'], shell=True)
+
+class PsHbo(object):
+
+    def __init__(self, say):
+        self.say = say
+        
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(['sudo ps4-waker [option] start CUSA01567'], shell=True)
+
+class PsN(object):
+
+    def __init__(self, say):
+        self.say = say
+        
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(['sudo ps4-waker [option] start CUSA00129'], shell=True)
+
+class PsIP(object):
+
+    def __init__(self, say):
+        self.say = say
+        
+
+    def run(self, voice_command):
+        self.say("With Pleasure")
+        subprocess.call(['sudo ps4-waker [option]'], shell=True)
+
+##        xml = """<?xml version="1.0"?>
+##<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+##  <s:Body>
+##    <u:X_SendIRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1">
+##      <IRCCCode>AAAAAQAAAAEAAAATAw==</IRCCCode>
+##    </u:X_SendIRCC>
+##  </s:Body>
+##  <s:Header/>
+##      <s:BODY><u:X-Auth-PSK>0000</u:X-Auth-PSK></s:Body>
+##</s:Envelope>"""
+##        xml2 = """<?xml version=\"1.0\"?><s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><s:Body><u:X_SendIRCC xmlns:u=\"urn:schemas-sony-com:service:IRCC:1\"><IRCCCode>AAAAAQAAAAEAAAATAw==</IRCCCode></u:X_SendIRCC></s:Body></s:Envelope>"""
+##
+##        headers = {'Content-Type': 'text/xml'}
+##        requests.post('http://192.168.0.23/sony/IRCC', data=xml, headers=headers)
+
+
 
 def make_actor(say):
     """Create an actor to carry out the user's commands."""
 
     actor = actionbase.Actor()
 
+    
     actor.add_keyword(
         _('ip address'), SpeakShellCommandOutput(
             say, "ip -4 route get 1 | head -1 | cut -d' ' -f8",
             _('I do not have an ip address assigned to me.')))
 
-    actor.add_keyword(_('volume up'), VolumeControl(say, 10))
-    actor.add_keyword(_('volume down'), VolumeControl(say, -10))
+    #actor.add_keyword(_('volume up'), VolumeControl(say, 10))
+    #actor.add_keyword(_('volume down'), VolumeControl(say, -10))
     actor.add_keyword(_('max volume'), VolumeControl(say, 100))
+    actor.add_keyword(_('GW open a new terminal'), MasterTerminal(say))
+    actor.add_keyword(_('GW open the python editor'), MasterIDLE(say))
+    actor.add_keyword(_('GW open netflix'), OpenTVNetflix(say))
+    actor.add_keyword(_('GW volume up'), TVVolumeUp(say))
+    actor.add_keyword(_('GW volume down'), TVVolumeDown(say))
+    actor.add_keyword(_('GW switch to input two'), TVHdmiTwo(say))
+    actor.add_keyword(_('GW tv exit'), TVExit(say))
+    #actor.add_keyword(_('GW pause'), KodiPlay(say))
+    actor.add_keyword(_('GW open music'), Spotify(say))
+    actor.add_keyword(_('GW switch to input 3'), TVHdmiThree(say))
+    actor.add_keyword(_('GW wake the giant'), PsOn(say))
+    actor.add_keyword(_('GW kill giant'), PsOff(say))
+    actor.add_keyword(_('GW start Wolf'), PsWolf(say))
+    actor.add_keyword(_('GW tv off'), TVPowerOff(say))
+    actor.add_keyword(_('GW tv on'), TVPowerOn(say))
+    actor.add_keyword(_('GW start hbo'), PsHbo(say))
+    actor.add_keyword(_('GW network search'), PsIP(say))
+    actor.add_keyword(_('GW open movies'), PsN(say))
 
     actor.add_keyword(_('repeat after me'),
                       RepeatAfterMe(say, _('repeat after me')))

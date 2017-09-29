@@ -30,6 +30,8 @@ import action
 import i18n
 import speech
 import tts
+import tj
+import asyncore
 
 # =============================================================================
 #
@@ -134,10 +136,16 @@ def main():
 
     args = parser.parse_args()
 
+    
+
     create_pid_file(args.pid_file)
     i18n.set_language_code(args.language, gettext_install=True)
-
+    
     player = audio.Player(args.output_device)
+    say = tts.create_say(player)
+
+    actor = action.make_actor(say)
+    listener = tj.Client(actor, say, player)
 
     if args.cloud_speech:
         credentials_file = os.path.expanduser(args.cloud_speech_secrets)
