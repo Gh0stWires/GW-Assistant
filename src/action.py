@@ -304,6 +304,7 @@ class TVExit(object):
         subprocess.call(shlex.split('/home/pi/voice-recognizer-raspi/src/send_command.sh 192.168.0.12 AAAAAQAAAAEAAABgAw=='))
 
 
+<<<<<<< HEAD
 ##class KodiPlay(object):
 ##
 ##    def __init__(self, say):

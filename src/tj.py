@@ -46,3 +46,4 @@ class Client(object):
             return self.command
         else:
             return None
+
